@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>权益订单查询</title>
+	</head>
+	<body>
+		<div class="layui-tab layui-tab-card">
+			<ul class="layui-tab-title">
+                <li class="layui-this">订单查看</li>
+			</ul>
+			<div class="layui-tab-content" style="height: 700px;">
+				<!--
+				描述：权益订单基本信息
+				-->
+				<div class="layui-tab-item layui-show ">
+					<!--
+					描述：动态生成表格
+					 -->
+					<div class="dynamicTable"   >
+					  <!--
+					  描述：搜索功能的的实现
+					  -->
+					  <div class="layui-container">
+						  <form class="layui-form"  >
+					  	<div class="layui-row" style="margin-bottom: 10px;">
+					  		<div class="layui-col-md3">
+					  			<div>
+					  				<div class="layui-inline">
+					  					<input type="tel" name="" id="dingdanid"  autocomplete="off" class="layui-input" placeholder="Id" style="height: 35px;width: 210px;">
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<div class="layui-form">
+					  				<div class="layui-inline" style="height: 35px;">
+					  					      <select name="dingdanzhuangtai" id="orderstatus" >
+					  					        <option value="">--请选择订单状态--</option>
+					  					        <option value="0">未付款</option>
+					  					        <option value="1">已付款</option>
+					  					        <option value="2">未发货</option>
+					  					        <option value="3">已发货</option>
+					  					      </select>
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<div>
+					  				<div class="layui-inline">
+					  					<input type="tel" name="" id="kehubianhao"  autocomplete="off" class="layui-input" placeholder="学生姓名" style="height: 35px;width: 210px;">
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<div class="layui-form" >
+					  				<div class="layui-inline">
+					  						 <select  name="orderqudao" id="orderqudao" style="height: 35px;">
+												 <!--<option value="">&#45;&#45;请选择渠道&#45;&#45;</option>-->
+												 <!--<option value="唐山银行">唐山银行</option>-->
+					  						</select>
+					  				</div>
+					  			</div>
+					  		</div>
+					  	</div>
+					  	<div class="layui-row"  style="margin-bottom: 10px;">
+					  		<div class="layui-col-md3">
+					  			<div>
+					  				<div class="layui-inline">
+					  					<input type="text" name="" id="shouhuoshoujihao"  autocomplete="off" class="layui-input" placeholder="活动名称" style="height: 35px;width: 210px;">
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<div class="layui-form">
+					  				<div class="layui-inline">
+					  					<input type="text" name="" id="orderstartdate" placeholder="开始时间" autocomplete="off" style="height: 35px; width: 210px;">
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<div class="layui-form">
+					  				<div class="layui-inline">
+					  					<input type="text" name="" id="orderenddate"  placeholder="结束时间" autocomplete="off" style="height: 30px;width: 210px;">
+					  				</div>
+					  			</div>
+					  		</div>
+					  		<div class="layui-col-md3">
+					  			<!--<div class="layui-form">
+					  				<div class="layui-inline">
+					  					<select name="qudao" id="gifttype" lay-verify="" style="height: 30px;">
+					  						<option value="">请选择奖品类型</option>
+					  						<option value="0">商城优惠券</option>
+					  						<option value="1">虚拟商品</option>
+					  						<option value="2">b2c普通商品</option>
+					  						</select>
+					  				</div>
+					  			</div>-->
+								<div >
+									<div class="layui-inline">
+										<button type="reset"  class="layui-btn layui-btn-primary" style="height: 35px;">重置</button>
+									</div>
+								</div>
+
+					  		</div>
+					  	</div>
+
+					  	<!--<div class="layui-row"  style="margin-bottom: 10px;"  >
+					  		<div class="layui-col-md3"></div>
+					  	</div>-->
+						</form>
+						<button class="layui-btn" data-type="reload">搜索</button>
+						<button class="layui-btn " id="exportorder" >导出</button>
+					  </div>
+
+					</div>
+
+					<table class="layui-hide" id="orderAll" lay-filter="orederAll"></table>
+				</div>
+
+			</div>
+
+			<!-- 
+			 描述：底部按钮设置
+			 -->
+			<!--<div style="text-align: center;">
+				<button class="layui-btn"  onclick="saveOrder()" >保存</button>
+				<button class="layui-btn" onclick="submitOrder()">提交</button>
+				<button class="layui-btn" onclick="returnBack()">返回</button>
+			</div>-->
+		</div>
+	</body>
+	<!--
+		描述：加载订单详情信息
+	-->
+	<div id="orderdetailView" style="padding: 1% 5%;display: none">
+		<table class="layui-table"  id="orderdetailViewTable"></table>
+	</div>
+	<!--表格每行设置编辑-->
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">订单详情</a>
+		<!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+	</script>
+
+	<script type="text/javascript" src="./layui/layui.all.js"></script>
+	<link rel="stylesheet" href="./layui/css/layui.css" media="all">
+	<script src="./layui/layui.js"></script>
+	<script type="text/javascript" src="./layui/layui.all.js"></script>
+	<script type="text/javascript" src="./jquery-1.8.3.js"></script>
+    <script src="${request.contextPath}/statics/js/modules/equities/equities.js"></script>
+    <script src="${request.contextPath}/statics/js/modules/equities/layui/layui.all.js" type="text/javascript" charset="UTF-8"></script>
+    <link rel="stylesheet" href="${request.contextPath}/statics/js/modules/equities/layui/css/layui.css"  media="all">
+	
+	<!-- 
+	描述：js动态表格生成订单信息
+	 -->
+	<script>
+		var table ;//初始化
+		var tableIn;//动态表格变量
+	layui.use('table', function(){
+	   table = layui.table;
+	  //方法级渲染
+	 tableIn = table.render({
+	    elem: '#orderAll'
+	    ,url: 'http://localhost:9090/queryAllByPage'
+	    ,cols: [[
+	      {checkbox: true, fixed: true}
+	      ,{field:'id', title: '学生id', width:200, sort: true, fixed: true}
+	      ,{field:'name', title: '学生姓名', width:200}
+             /* ,{field:'sex', title: '订单号', width:80, sort: true}
+             ,{field:'city', title: '份数', width:80}
+             ,{field:'sign', title: '订单类型'}
+             ,{field:'experience', title: '手机号', sort: true, width:80}
+             ,{field:'score', title: '口令', sort: true, width:80}
+             ,{field:'classify', title: '职业', width:80}
+             ,{field:'wealth', title: '财富', sort: true, width:135} */
+          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+	    ]]
+	    ,id: 'testReload'
+	    ,page: true
+	    ,height: 310
+		//数据回调实现一键下载
+         ,done: function(res, curr, count){
+	       // alert('count'+res.data);
+	        console.log(res.data);
+	        $("#exportorder").click(function () {
+				alert("导出的测试");
+            });
+		 }
+
+	 });
+	  //获取搜索的对应参数
+	  var $ = layui.$, active = {
+	    reload: function(){
+	      var id = $('#dingdanid');
+		  var orderstatus=$("#orderstatus option:selected");//获取当前选择项订单状态.
+		  var name = $('#kehubianhao');//获取客户编号
+		  //var orderqudao1 = $("#orderqudao option:selected");
+		  var orderqudao=$("#orderqudao option:selected");//获取订单渠道
+		  var shouhuoshoujihao = $('#shouhuoshoujihao');//获取收货手机号
+		  var orderstartdate = $('#orderstartdate');//获取订单开始时间
+		  var orderenddate = $('#orderenddate');//获取订单结束时间
+		  var gifttype=$("#gifttype option:selected");//获取礼品类型
+	      
+	      //执行重载
+	      table.reload('testReload', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: {
+	          key: {
+				  //传入后台的参数的设置
+	        demoReload: id.val(),
+			orderstatus:orderstatus.val(),
+			kehubianhao:name.val(),
+			orderqudao:orderqudao.val(),
+			shouhuoshoujihao:shouhuoshoujihao.val(),
+			orderstartdate:orderstartdate.val(),
+			orderenddate:orderenddate.val(),
+			gifttype:gifttype.val(),
+				
+	          }
+	        }
+	      }, 'data');
+	    }
+	  };
+
+        //监听行工具事件--查看订单详情信息
+        table.on('tool(orederAll)', function(obj){
+            var data = obj.data;//获取当前行的数据
+			//alert(data.id);
+            //console.log(obj)
+			if(obj.event=='edit'){
+                layer.open({
+                    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    type:1,
+                    title:"订单详细信息",
+                    area: ['80%','80%'],
+                    content: $('#orderdetailView'),
+                    success: function(layero, index){
+                        layui.use('table', function(){
+                            var table = layui.table;
+                            var cols =  [[ //标题栏
+                                {field:'id', title: '订单详情ID',align: 'center', width:80}
+                                ,{field:'activity_id', title: '活动ID',align: 'center', width:80}
+                                ,{field:'activity_name', title: '活动名称',align: 'center', width:80}
+                                ,{field:'gift_id', title: '礼品ID',align: 'center', width:80}
+                                ,{field:'gift_name', title: '礼品名称',align: 'center', width:80}
+                                ,{field:'gift_pic', title: '礼品图片',align: 'center'}
+                                ,{field:'gift_getnum',title: '领取礼品数量',align: 'center', width:80}
+                                ,{field:'ordernumber', title: '订单号',align: 'center', width:80}
+                                ,{field:'ordertype', title: '订单类型',align: 'center', width:80}
+                                ,{field:'phone', title: '收货人手机号',align: 'center', width:80}
+                                ,{field:'address', title: '收货地址',align: 'center', width:80}
+                                ,{field:'create_time', title: '创建时间',align: 'center', width:80}
+                                ,{field:'group_id', title: '分组ID',align: 'center', width:80}
+                            ]]
+                            //展示已知数据
+                            table.render({
+                                elem: '#orderdetailViewTable'
+                                , url: '../json/view-member.json'
+                                ,size:'lg'
+                                ,cols:cols
+                                ,even: true
+                                , height: '300'
+								,width: '100%'
+                                ,page: true //是否显示分页
+                            });
+
+                        });
+                    }
+
+
+
+
+                });
+			}
+
+            /*if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }*/
+        });
+
+	  
+	  $('.dynamicTable .layui-btn').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+
+	});
+
+
+	//导出选中的订单信息
+	$('#exportorder1').click(function () {
+	    var checkStatus = table.checkStatus('testReload');
+	    var ids = [];
+	    $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+	        ids.push(o.id);
+	    });
+	    if (ids.length < 1) {
+	        layer.msg('无选中项');
+	        return false;
+	    }
+	    ids = ids.join(",");
+		alert('ids:'+ids);
+	    layer.confirm('您确定要导出选中的数据吗？', function (index) {
+			//通过ids查询出要导出的数据
+	        $.get("{:url('add_sends')}", {ids: ids, courseId: "{$courseId}"}, function (res) {
+	            if (/*res.code == 1*/ true) {
+	                layer.msg(res.msg, {time: 1000, icon: 1});
+	                tableIn.reload();
+	            } else {
+	                layer.msg(res.msg, {time: 1000, icon: 2});
+	            }
+	        });
+	        layer.close(index);
+	    });
+	});
+	
+	</script>
+
+
+	<!-- 订单查看模糊查询的基本js -->
+	<script>
+	layui.use(['form', 'layedit', 'laydate'], function(){
+	 var form = layui.form,
+	 	layer = layui.layer,
+	 	layedit = layui.layedit,
+	 	laydate = layui.laydate;
+		//开始时间
+		laydate.render({
+			elem: '#startdate',
+			type: 'datetime'
+		});
+		//结束时间
+		laydate.render({
+			elem: '#enddate',
+			type: 'datetime'
+		});
+		
+		//订单信息页开始时间
+		laydate.render({
+			elem: '#orderstartdate',
+			type: 'datetime'
+		});
+		//订单信息页结束时间
+		laydate.render({
+			elem: '#orderenddate',
+			type: 'datetime'
+		});
+	  //监听提交
+	  form.on('submit(formDemo)', function(data){
+	    layer.msg(JSON.stringify(data.field));
+	    return false;
+	  });
+	});
+	
+	</script>
+
+	
+	<!-- 获取渠道信息 -->
+	<script type="text/javascript">
+        var form;
+        layui.use('form', function(){  //此段代码必不可少
+             form = layui.form;
+            form.render();
+        });
+
+			$(function(){
+				$.ajax({
+					type: "get",
+					async: false,
+					url:'http://localhost:9039/mc-admin/magic/product/plateforms',
+					 //dataType:'json',
+					success:function(data){
+						//alert(data);
+						console.log(data);
+						var name = data.msg;
+						if(name == "success"){
+							var plateforms = data.plateforms;
+							console.log("plateforms:"+plateforms);
+							var html ='<option value="">--请选择渠道--</option>'
+							for(var i=0;i<plateforms.length;i++){
+
+                                html +='<option value="'+plateforms[i].platformId+'">'+plateforms[i].name+'</option>';
+                                //$("#orderqudao").append(" <option value='"+plateforms[i].platformId+"'>"+plateforms[i].name+"</option>")
+							}
+							//alert(html);
+                            $("#orderqudao").append(html);
+                            form.render();
+						}
+	
+					},
+				})
+			})
+
+	</script>
+
+	<!--<script>
+		var $;
+		var layer;
+        layui.use('layer', function() { //独立版的layer无需执行这一句
+             $ = layui.jquery;
+			layer = layui.layer; //独立版的layer无需执行这一句
+        });
+
+        function saveOrder() {
+			layer.msg("活动已保存请不要重复此操作");
+        }
+        function submitOrder() {
+            layer.msg("活动已提交请不要重复此操作")
+        }
+        function returnBack() {
+            layer.msg("活动已返回请不要重复此操作")
+        }
+
+	</script>-->
+	
+</html>
