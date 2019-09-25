@@ -4,6 +4,7 @@ import com.dyq.dto.StudentDto;
 import com.dyq.entity.Product;
 import com.dyq.entity.Student;
 import com.dyq.poiutile.ExportPOIUtils;
+import com.dyq.poiutile.ImportExcelUtil;
 import com.dyq.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -89,7 +90,6 @@ public class StudentController {
     public void download1(HttpServletResponse response, String ids){
         String fileName = "人员档案列表";
 
-        // List<User> users = sRPService.exportList(ids);
         List<Product> list = new ArrayList<>();
         Product product = new Product();
         product.setId(1);
@@ -118,8 +118,66 @@ public class StudentController {
         {
 
         }
+    }
+
+    @RequestMapping("download2")
+    public void download2(HttpServletResponse response, String ids){
+        String fileName = "人员档案列表";
+
+        List<Product> list = new ArrayList<>();
+        Product product = new Product();
+        product.setId(1);
+        product.setName("丁");
+        product.setTime(new Date());
+         list.add(product);
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setName("");
+        product1.setTime(new Date());
+         list.add(product1);
+         String keys[] ={"id","name","time"};
+         String columns[] = {"订单id","名称","时间"};
+        try{
+            // ImportOrExportPoiUtil.exportExcel("导出测试",list,response.getOutputStream(),null);
+            ImportExcelUtil.start_download(response,"测试",list,columns,keys);
+
+        }catch (Exception e)
+        {
+        }
 
 
+
+    }
+
+    @RequestMapping("write")
+    public void write(HttpServletResponse response, String ids){
+        String fileName = "人员档案列表";
+        List<Product> list = new ArrayList<>();
+        Product product = new Product();
+        product.setId(1);
+        product.setName("丁");
+        product.setTime(new Date());
+        list.add(product);
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setName("");
+        product1.setTime(new Date());
+        list.add(product1);
+        String keys[] ={"id","name","time"};
+        String columns[] = {"订单id","名称","时间"};
+        try{
+            // ImportOrExportPoiUtil.exportExcel("导出测试",list,response.getOutputStream(),null);
+           // ImportExcelUtil.start_download(response,"测试",list,columns,keys);
+            String url ="F:\\测试2.xlsx";
+            String fields[] ={"id","name","time"};
+
+            List<Product> products = ImportExcelUtil.importExcel(url, "yyyy-MM-dd", fields, 1, 0, Product.class);
+            for(Product product2 :products){
+                System.out.println("product: "+product2);
+            }
+        }catch (Exception e)
+        {
+        }
 
     }
 }

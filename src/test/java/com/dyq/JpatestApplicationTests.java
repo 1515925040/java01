@@ -84,7 +84,6 @@ public class JpatestApplicationTests {
     @Test
     public void test(HttpServletResponse response){
         String fileName = "人员档案列表";
-
         //List<User> users = sRPService.exportList(ids);
         // 列名
         String columnNames[] = { "ID", "姓名", "性别", "所属部门", "所属单位", "邮箱",
@@ -98,6 +97,25 @@ public class JpatestApplicationTests {
             e.printStackTrace();
         }
 
+    }
+    @Test
+    public void testa(){
+         /*HttpServletResponse response;
+        String fileName = "人员档案列表";
+
+        //List<User> users = sRPService.exportList(ids);
+        List<Object> list = new ArrayList<>();
+        // 列名
+        String columnNames[] = { "ID", "姓名", "性别", "所属部门", "所属单位", "邮箱",
+                         "电话", "手机", "学历/学位", "专业/专科方向", "直属上级", "账号锁定"};
+        // map中的key
+        String keys[] = { "id", "userName", "gender", "dept", "unit", "email",
+                "tel", "phone", "degree", "major", "parentName", "isLocked" };
+        try {
+            ExportPOIUtils.start_download(response, fileName, list,columnNames, keys);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
 }

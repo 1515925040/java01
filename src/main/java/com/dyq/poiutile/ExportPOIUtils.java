@@ -22,7 +22,6 @@ public class ExportPOIUtils {
     //参数说明:  fileName：文件名   projects：对象集合  columnNames： 列名   keys： map中的key--->对应对象属性名
     public static void start_download(HttpServletResponse response, String fileName, List<?> projects,
                                       String[] columnNames, String[] keys) throws IOException {
-
         //将集合中对象的属性  对应到  List<Map<String,Object>>
         List<Map<String,Object>> list=createExcelRecord(projects, keys);
 
